@@ -223,7 +223,6 @@
     <div class="subtitle">2인 온라인 대전 · 방 생성/참가 · 실시간 동기화 · Undo/Redo는 상호 동의 시만 가능</div>
 
     <div id="noticeBox" class="notice-box hidden"></div>
-    <div id="testsBox" class="tests-box"></div>
 
     <div class="layout">
       <div class="board-card">
@@ -337,7 +336,6 @@
     bindSocketEvents(socket);
     uiState.game = emptyGame();
     render();
-    renderTests(runSelfTests());
 
     function initializeSocket() {
       if (typeof window.io !== "function") {
@@ -356,7 +354,6 @@
         showNotice(`Socket.IO 초기화에 실패했습니다: ${error.message}. 현재는 오프라인 미리보기 모드입니다.`);
         return createNoopSocket();
       }
-      uiState.onlineEnabled = true;
     }
 
     function createNoopSocket() {
