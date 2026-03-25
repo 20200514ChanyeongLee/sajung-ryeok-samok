@@ -356,6 +356,7 @@
         showNotice(`Socket.IO 초기화에 실패했습니다: ${error.message}. 현재는 오프라인 미리보기 모드입니다.`);
         return createNoopSocket();
       }
+      uiState.onlineEnabled = true;
     }
 
     function createNoopSocket() {
