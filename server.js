@@ -693,3 +693,6 @@ function leavePreviousRoomIfNeeded(socket) {
   socket.data.roomCode = null;
   socket.data.player = null;
 }
+
+console.log("CREATE ROOM", roomCode, [...rooms.keys()]);
+console.log("JOIN TRY", code, [...rooms.keys()]);
