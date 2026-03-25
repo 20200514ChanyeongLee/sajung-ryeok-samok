@@ -53,7 +53,6 @@ io.on("connection", (socket) => {
       const room = createRoom(roomCode);
 
       console.log("CREATE ROOM", roomCode, [...rooms.keys()]);
-      console.log("JOIN TRY", code, [...rooms.keys()]);
 
       room.players.black = {
         socketId: socket.id,
@@ -80,6 +79,8 @@ io.on("connection", (socket) => {
       leavePreviousRoomIfNeeded(socket);
 
       const room = rooms.get(code);
+      console.log("JOIN TRY", code, [...rooms.keys()]);
+
       if (!room) throw new Error("존재하지 않는 방입니다.");
       if (room.players.white) throw new Error("방이 가득 찼습니다.");
 
