@@ -100,19 +100,27 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("player_action", ({ roomCode, action }) => {
-    try {
-      const room = getRoomOrThrow(roomCode);
-      const player = socket.data.player;
-      if (!player) throw new Error("플레이어가 아닙니다.");
-      if (!isSocketPlayerInRoom(socket, room, player)) throw new Error("권한이 없습니다.");
+socket.on("player_action", ({ roomCode, action }) => {
+  try {
+    const room = getRoomOrThrow(roomCode);
+    const player = socket.data.player;
+    if (!player) throw new Error("플레이어가 아닙니다.");
+    if (!isSocketPlayerInRoom(socket, room, player)) throw new Error("권한이 없습니다.");
 
-      applyPlayerAction(room, player, action);
-      broadcastRoomState(roomCode);
-    } catch (err) {
-      emitError(socket, err.message);
+    // Undo/Redo 요청자가 새 행동을 시작하면 기존 요청 자동 취소
+    if (room.pendingRequest && room.pendingRequest.from === player) {
+      room.game.log.push(
+        `${playerName(player)}이 새 행동을 진행하여 ${room.pendingRequest.requestType.toUpperCase()} 요청이 자동 취소됨`
+      );
+      clearPendingRequest(room, roomCode);
     }
-  });
+
+    applyPlayerAction(room, player, action);
+    broadcastRoomState(roomCode);
+  } catch (err) {
+    emitError(socket, err.message);
+  }
+});
 
   socket.on("request_action", ({ roomCode, requestType }) => {
     try {
