@@ -52,6 +52,9 @@ io.on("connection", (socket) => {
       const roomCode = generateRoomCode();
       const room = createRoom(roomCode);
 
+      console.log("CREATE ROOM", roomCode, [...rooms.keys()]);
+      console.log("JOIN TRY", code, [...rooms.keys()]);
+
       room.players.black = {
         socketId: socket.id,
         nickname: safeNickname,
@@ -694,5 +697,3 @@ function leavePreviousRoomIfNeeded(socket) {
   socket.data.player = null;
 }
 
-console.log("CREATE ROOM", roomCode, [...rooms.keys()]);
-console.log("JOIN TRY", code, [...rooms.keys()]);
